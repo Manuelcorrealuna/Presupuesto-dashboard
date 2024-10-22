@@ -146,7 +146,7 @@ st.plotly_chart(fig_rrhh)
 openai.api_key = st.secrets["openai_api_key"]
 
 # Función para limitar los datasets a las primeras 10 filas
-def limitar_dataset(df, max_filas=10):
+def limitar_dataset(df, max_filas=1000):
     return df.head(max_filas)
 
 # Función para analizar los datasets filtrados usando la API de chat

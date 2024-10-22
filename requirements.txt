@@ -4,3 +4,4 @@ openai
 networkx
 matplotlib
 plotly
+pygraphviz

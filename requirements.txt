@@ -1,3 +1,6 @@
-Flask
-plotly
+streamlit
 pandas
+openai
+networkx
+matplotlib
+plotly

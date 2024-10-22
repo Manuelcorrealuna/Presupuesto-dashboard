@@ -134,4 +134,64 @@ for jurisdiccion in leyendas_rrhh:
     fig_rrhh.add_trace(
         go.Bar(x=jurisdiccion_data['Año'], y=jurisdiccion_data['Porcentaje'], name=jurisdiccion, legendgroup=jurisdiccion,
                showlegend=False, text=jurisdiccion_data['Porcentaje'].apply(lambda x: f'{x:.0f}%'), 
-               hovertext=jurisdiccion_data['J
+               hovertext=jurisdiccion_data['JURISDICCION'], marker_color=color_map[jurisdiccion]),
+        row=1, col=2
+    )
+
+fig_rrhh.update_layout(barmode='stack', title="Recursos Humanos por Jurisdicción", height=600)
+st.plotly_chart(fig_rrhh)
+
+# --- Conexión a OpenAI ---
+# Cargar la API key desde st.secrets
+openai.api_key = st.secrets["openai_api_key"]
+
+# Función para limitar los datasets a las primeras 10 filas
+def limitar_dataset(df, max_filas=10):
+    return df.head(max_filas)
+
+# Función para analizar los datasets filtrados usando la API de chat
+def obtener_analisis(datos_gastos, datos_rrhh, datos_organigrama):
+    # Limitar el tamaño de los datasets
+    datos_gastos = limitar_dataset(datos_gastos)
+    datos_rrhh = limitar_dataset(datos_rrhh)
+    datos_organigrama = limitar_dataset(datos_organigrama)
+    
+    # Preparar los datos para enviar como prompt
+    prompt = f"""
+    Soy funcionario en el estado nacional de argentina, y quiero que seas mi analista de negocio para que puedas hacer consultoría estratégica.
+    Proporciona un análisis detallado de los gastos, recursos humanos y estructura organizacional, considerando las diferencias entre los distintos años.
+    
+    Datos de Gastos:
+    {datos_gastos.to_string()}
+    
+    Datos de Recursos Humanos:
+    {datos_rrhh.to_string()}
+    
+    Datos de Estructura Organizacional:
+    {datos_organigrama.to_string()}
+    
+    ¿Cuáles son las observaciones más importantes? ¿Qué tendencias o recomendaciones se podrían extraer de estos datos?
+    """
+    
+    # Llamada a la API de OpenAI utilizando el modelo de chat 'gpt-3.5-turbo' o 'gpt-4'
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Actúa como un experto Business Analyst."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=1024,
+        temperature=0.7,
+    )
+    
+    # Acceder al contenido del mensaje desde el objeto de respuesta
+    return response.choices[0].message['content']
+
+# Crear un botón en la interfaz de Streamlit
+if st.button("Analizar datos con OpenAI"):
+    # Ejecutar la función que analiza los datos
+    analisis = obtener_analisis(gastos_filtrados, recursos_humanos_filtrados, organigrama_filtrado)
+    
+    # Mostrar el análisis en la interfaz
+    st.subheader("Análisis realizado por OpenAI")
+    st.write(analisis)

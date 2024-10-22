@@ -1,7 +1,5 @@
-streamlit
-pandas
-openai
+plotly
 networkx
 matplotlib
-plotly
-pygraphviz
+pydot
+openai

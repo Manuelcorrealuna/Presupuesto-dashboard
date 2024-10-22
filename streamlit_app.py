@@ -133,9 +133,4 @@ for jurisdiccion in leyendas_rrhh:
     )
     fig_rrhh.add_trace(
         go.Bar(x=jurisdiccion_data['Año'], y=jurisdiccion_data['Porcentaje'], name=jurisdiccion, legendgroup=jurisdiccion,
-               showlegend=False, text=jurisdiccion_data['Porcentaje'].apply(lambda x: f'{x:.0f}%'), 
-               hovertext=jurisdiccion_data['JURISDICCION'], marker_color=color_map[jurisdiccion]),
-        row=1, col=2
-    )
-
-fig_rrhh.update_layout
+               showlegend=False, text=

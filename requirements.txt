@@ -2,4 +2,4 @@ plotly
 networkx
 matplotlib
 pydot
-openai
+openai==0.28.0

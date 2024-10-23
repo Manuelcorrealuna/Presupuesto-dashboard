@@ -195,3 +195,4 @@ if st.button("Analizar datos con OpenAI"):
     # Mostrar el análisis en la interfaz
     st.subheader("Análisis realizado por OpenAI")
     st.write(analisis)
+    st.write(st.secrets)  # Verificar si el secreto está disponible

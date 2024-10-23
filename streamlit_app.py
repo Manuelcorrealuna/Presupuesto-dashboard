@@ -140,7 +140,7 @@ for jurisdiccion in leyendas_rrhh:
 
 fig_rrhh.update_layout(barmode='stack', title="Recursos Humanos por Jurisdicción", height=600)
 st.plotly_chart(fig_rrhh)
-
+st.write(st.secrets)  # Verificar si el secreto está disponible
 # --- Conexión a OpenAI ---
 # Cargar la API key desde st.secrets
 openai.api_key = st.secrets["openai_api_key"]
@@ -195,4 +195,4 @@ if st.button("Analizar datos con OpenAI"):
     # Mostrar el análisis en la interfaz
     st.subheader("Análisis realizado por OpenAI")
     st.write(analisis)
-    st.write(st.secrets)  # Verificar si el secreto está disponible
+
